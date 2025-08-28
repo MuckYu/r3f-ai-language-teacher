@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: "standalone", // ensures Vercel generates the routes manifest
+  // No special output options needed for Vercel deployment
 };
 
 export default nextConfig;
