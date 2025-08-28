@@ -1,8 +1,10 @@
+// next.config.mjs
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  // No need for experimental.appDir in Next.js 14
-  reactStrictMode: true,
-  swcMinify: true,
+  experimental: {
+    appDir: true,
+  },
+  output: "standalone", // <-- ensures routes manifest is generated for Vercel
 };
 
 export default nextConfig;
