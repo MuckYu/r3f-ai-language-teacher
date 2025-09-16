@@ -6,7 +6,7 @@ export default async function handler(req, res) {
   }
 
   const { password } = req.body;
-  const CORRECT_PASSWORD = process.env.NEXT_PUBLIC_PASSWORD; // Use the same password from your .env file
+  const CORRECT_PASSWORD = process.env.SP_KEY; // Use the same password from your .env file
 
   if (password === CORRECT_PASSWORD) {
     const cookie = serialize('authenticated', 'true', {
