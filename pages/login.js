@@ -25,7 +25,8 @@ const Login = () => {
       if (response.ok && data.success) {
         setIsSuccess(true);
         setTimeout(() => {
-          router.push('/'); // Redirect to the final page
+          // Use a hard reload instead of router.push
+          window.location.href = '/'; 
         }, 1500);
       } else {
         setError('Incorrect password. Please try again.');
@@ -79,7 +80,6 @@ const Login = () => {
     </div>
   );
 };
-
 const styles = {
   container: {
     display: 'flex',
@@ -157,5 +157,4 @@ const styles = {
     fontWeight: 'bold',
   },
 };
-
 export default Login;
