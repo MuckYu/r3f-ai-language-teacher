@@ -6,15 +6,15 @@ export default async function handler(req, res) {
   }
 
   const { password } = req.body;
-  const CORRECT_PASSWORD = process.env.SP_KEY; // Use the same password from your .env file
+  const CORRECT_PASSWORD = process.env.SP_KEY;
 
   if (password === CORRECT_PASSWORD) {
     const cookie = serialize('authenticated', 'true', {
       path: '/',
-      httpOnly: true, // Crucial for security; prevents client-side access
-      secure: process.env.NODE_ENV === 'production', // Secure cookies in production
-      sameSite: 'strict', // Protects against CSRF attacks
-      maxAge: 60 * 60 // The session lasts for 1 hour
+      httpOnly: true,
+      secure: true, // This is the key change for Vercel
+      sameSite: 'strict',
+      maxAge: 60 * 60 * 24, // Cookie valid for 24 hours
     });
 
     res.setHeader('Set-Cookie', cookie);
