@@ -1,12 +1,13 @@
-// pages/login.js
 'use client';
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +25,7 @@ const Login = () => {
       if (response.ok && data.success) {
         setIsSuccess(true);
         setTimeout(() => {
-          window.location.reload();
+          router.push('/'); // Redirect to the final page
         }, 1500);
       } else {
         setError('Incorrect password. Please try again.');
