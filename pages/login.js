@@ -10,7 +10,7 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (password === process.env.NEXT_PUBLIC_PASSWORD) {
+    if (password === process.env.SP_KEY) {
       setIsSuccess(true);
       
       setTimeout(() => {
