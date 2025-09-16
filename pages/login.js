@@ -8,17 +8,29 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password === process.env.SP_KEY) {
-      setIsSuccess(true);
-      
-      setTimeout(() => {
-        window.location.reload();
-      }, 1500);
-      
-    } else {
-      setError('Incorrect password. Please try again.');
+    setError('');
+
+    try {
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setIsSuccess(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1500);
+      } else {
+        setError('Incorrect password. Please try again.');
+      }
+    } catch (err) {
+      setError('An error occurred. Please try again.');
     }
   };
 
