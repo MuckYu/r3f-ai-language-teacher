@@ -17,6 +17,7 @@ import { BoardSettings } from "./BoardSettings";
 import { MessagesList } from "./MessagesList";
 import { Teacher } from "./Teacher";
 import { TypingBox } from "./TypingBox";
+import UsageBadge from "./UsageBadge";
 
 const itemPlacement = {
   default: {
@@ -47,6 +48,8 @@ export const Experience = () => {
 
   return (
     <>
+      {/* Global fixed badge overlays the canvas (bottom-right) */}
+      <UsageBadge />
       <div className="z-10 md:justify-center fixed bottom-4 left-4 right-4 flex gap-3 flex-wrap justify-stretch">
         <TypingBox />
       </div>

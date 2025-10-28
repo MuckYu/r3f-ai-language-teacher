@@ -4,10 +4,12 @@ import { useEffect, useRef } from "react";
 export const MessagesList = () => {
   const messages = useAITeacher((state) => state.messages);
   const playMessage = useAITeacher((state) => state.playMessage);
-  const { currentMessage } = useAITeacher();
+  const stopMessage = useAITeacher((state) => state.stopMessage);
+  const currentMessage = useAITeacher((state) => state.currentMessage);
   const english = useAITeacher((state) => state.english);
   const furigana = useAITeacher((state) => state.furigana);
   const classroom = useAITeacher((state) => state.classroom);
+  const language = useAITeacher((s) => s.language);
 
   const container = useRef();
 
@@ -19,27 +21,41 @@ export const MessagesList = () => {
   }, [messages.length]);
 
   const renderEnglish = (englishText) => (
-    <>
+    <div className="inline-block">
       {english && (
-        <p className="text-4xl inline-block px-2 rounded-sm font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-300/90 to-white/90">
+        <span className="text-4xl inline-block px-2 rounded-sm font-bold bg-clip-text text-transparent bg-gradient-to-br from-blue-300/90 to-white/90">
           {englishText}
-        </p>
+        </span>
       )}
-    </>
+    </div>
   );
 
   const renderJapanese = (japanese) => (
-    <p className="text-white font-bold text-4xl mt-2 font-jp flex flex-wrap gap-1">
+    <div className="text-white font-bold text-4xl mt-2 font-jp flex flex-wrap gap-1">
       {japanese.map((word, i) => (
         <span key={i} className="flex flex-col justify-end items-center">
           {furigana && word.reading && (
             <span className="text-2xl text-white/65">{word.reading}</span>
           )}
-          {word.word}
+          <span>{word.word}</span>
         </span>
       ))}
-    </p>
+    </div>
   );
+
+  const renderTextByLang = (answer) => {
+    const native = answer.target || answer.native || answer.japanese || [];
+    if (language.startsWith("ja")) return renderJapanese(native);
+    return (
+      <div className="text-white font-bold text-4xl mt-2">
+        {native.map((w, i) => (
+          <span key={i} className="px-1">
+            {w.word}
+          </span>
+        ))}
+      </div>
+    );
+  };
 
   return (
     <div
@@ -55,10 +71,10 @@ export const MessagesList = () => {
           <h2 className="text-8xl font-bold text-white/90 italic">
             Virtual
             <br />
-            Japanese Language School
+            Virtual Language School
           </h2>
           <h2 className="text-8xl font-bold font-jp text-red-600/90 italic">
-            ワワ先生日本語学校
+            translate any text
           </h2>
         </div>
       )}
@@ -79,9 +95,9 @@ export const MessagesList = () => {
                 {renderEnglish(message.answer.english)}
               </div>
 
-              {renderJapanese(message.answer.japanese)}
+              {renderTextByLang(message.answer)}
             </div>
-            {currentMessage === message ? (
+            {currentMessage?.id === message.id ? (
               <button
                 className="text-white/65"
                 onClick={() => stopMessage(message)}
@@ -142,16 +158,17 @@ export const MessagesList = () => {
                 {message.answer.grammarBreakdown.length > 1 && (
                   <>
                     {renderEnglish(grammar.english)}
-                    {renderJapanese(grammar.japanese)}
+                    {renderJapanese(grammar.target || grammar.native || grammar.japanese || [])}
                   </>
                 )}
 
                 <div className="mt-3 flex flex-wrap gap-3 items-end">
                   {grammar.chunks.map((chunk, i) => (
                     <div key={i} className="p-2 bg-black/30 rounded-md">
-                      <p className="text-white/90 text-4xl font-jp">
-                        {renderJapanese(chunk.japanese)}
-                      </p>
+                      <div className="text-white/90 text-4xl font-jp">
+                        {renderJapanese(chunk.target || chunk.native || chunk.japanese || [])}
+                      </div>
+
                       <p className="text-pink-300/90 text-2xl">
                         {chunk.meaning}
                       </p>

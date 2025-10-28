@@ -15,12 +15,21 @@ const ANIMATION_FADE_TIME = 0.5;
 export function Teacher({ teacher, ...props }) {
   const group = useRef();
   const { scene } = useGLTF(`/models/Teacher_${teacher}.glb`);
+
   useEffect(() => {
     scene.traverse((child) => {
-      if (child.material) {
-        child.material = new MeshStandardMaterial({
-          map: child.material.map,
-        });
+      if (child.isMesh) {
+        // Correct way to update the material
+        if (child.material) {
+          // Check if the material has a texture with an alpha channel.
+          // The best way is to check the material's opacity or alphaTest.
+          // Some glTFs also use vertex colors or a separate alphaMap.
+          // A robust solution is to just set these properties if they're needed.
+          
+          child.material.transparent = true;
+          child.material.alphaTest = 0.5; // Or another value, experiment for best results
+          child.material.needsUpdate = true;
+        }
       }
     });
   }, [scene]);

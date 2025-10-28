@@ -1,4 +1,5 @@
 import { teachers, useAITeacher } from "@/hooks/useAITeacher";
+import React from "react";
 
 export const BoardSettings = () => {
   const furigana = useAITeacher((state) => state.furigana);
@@ -17,7 +18,7 @@ export const BoardSettings = () => {
   const setClassroom = useAITeacher((state) => state.setClassroom);
 
   return (
-    <>
+    <div className="p-4">
       <div className="absolute right-0 bottom-full flex flex-row gap-10 mb-20">
         {teachers.map((sensei, idx) => (
           <div
@@ -103,6 +104,6 @@ export const BoardSettings = () => {
           English
         </button>
       </div>
-    </>
+    </div>
   );
 };

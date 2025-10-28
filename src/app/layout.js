@@ -15,8 +15,8 @@ export const notoSansJP = Noto_Sans_JP({
 });
 
 export const metadata = {
-  title: "AI Sensei",
-  description: "Learn Japanese with AI Sensei",
+  title: "Virtual Language Teacher",
+  description: "Learn any language with easy translation",
 };
 
 export default function RootLayout({ children }) {
